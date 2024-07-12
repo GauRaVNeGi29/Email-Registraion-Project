@@ -9,7 +9,7 @@ function CandidateHome() {
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
   useEffect(()=>{
-    console.log(api);
+    
     axios.get(`${api}/auth/verify`)
     .then(res=>{
       if(res.data.status){
