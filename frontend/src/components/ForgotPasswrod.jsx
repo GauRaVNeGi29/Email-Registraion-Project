@@ -6,11 +6,14 @@ import { useNavigate } from 'react-router-dom'
 const ForgotPassword = () => {
   const [email, setEmail] = useState('')
 
+  const api = import.meta.env.VITE_BACKEND_URL
+
+
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
       e.preventDefault()
-      axios.post('http://localhost:3000/auth/forgot-password', {
+      axios.post(`${api}/auth/forgot-password`, {
           email
       }).then(response => {
           if (response.data.status) {

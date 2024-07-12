@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import SearchComponent from './SearchComponent';
 
 function LandingPage() {
+  const api = import.meta.env.VITE_BACKEND_URL
+
   const navigate = useNavigate()
   axios.defaults.withCredentials = true; 
   const handleLogout = async ()=>{
     try {
-      const res = await axios.get('http://localhost:3000/auth/logout', { withCredentials: true });
+      const res = await axios.get(`${api}/auth/logout`, { withCredentials: true });
       if (res.data.status) {
         navigate('/login');
       } else {

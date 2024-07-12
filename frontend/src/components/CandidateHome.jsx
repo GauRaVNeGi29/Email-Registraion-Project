@@ -3,11 +3,14 @@ import SearchComponent from './SearchComponent';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+
 function CandidateHome() {
+  const api = import.meta.env.VITE_BACKEND_URL
   const navigate = useNavigate()
   axios.defaults.withCredentials = true;
   useEffect(()=>{
-    axios.get('http://localhost:3000/auth/verify')
+    console.log(api);
+    axios.get(`${api}/auth/verify`)
     .then(res=>{
       if(res.data.status){
 

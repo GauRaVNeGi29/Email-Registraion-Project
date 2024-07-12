@@ -9,11 +9,13 @@ const SignUpComponent = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
+    const api = import.meta.env.VITE_BACKEND_URL
+
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.post('http://localhost:3000/auth/signup', {
+        axios.post(`${api}/auth/signup`, {
             username,
             email,
             password

@@ -9,6 +9,9 @@ function LoginComponent() {
 
   const navigate = useNavigate()
 
+  const api = import.meta.env.VITE_BACKEND_URL
+
+
   // const xhr = new XMLHttpRequest();
   // xhr.withCredentials = true;
   // xhr.open('POST', 'http://localhost:3000/auth/login', true);
@@ -19,7 +22,7 @@ function LoginComponent() {
   const handleSubmit = async (e) =>{
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/auth/login',
+      const response = await axios.post(`${api}/auth/login`,
         {email ,password},
         {
         headers:{
