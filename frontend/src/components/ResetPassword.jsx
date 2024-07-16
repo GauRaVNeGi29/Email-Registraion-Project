@@ -14,19 +14,41 @@ const ResetPassword = () => {
 
     const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post(`${api}/auth/reset-password/`+token, {
-            password
-        }).then(response => {
-            if (response.data.status) {
-                navigate("/login")
+    // const handleSubmit = (e) => {
+    //     e.preventDefault()
+    //     axios.post(`${api}/auth/reset-password/`+token, {
+    //         password
+    //     }).then(response => {
+    //         if (response.data.status) {
+    //             navigate("/login")
+    //         }
+    //         console.log(response.data)
+    //     }).catch(err => {
+    //         console.log(err);
+    //     })
+    // };
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        try {
+          const response = await axios.post(`${api}/auth/reset-password/`+token,
+            password,
+            {
+            headers:{
+              "Content-Type":"application/json",
+            },
+            withCredentials:true,
             }
-            console.log(response.data)
-        }).catch(err => {
-            console.log(err);
-        })
-    };
+          )
+          if(response.data.status){
+            navigate("/login");
+          }
+          console.log(response.data);
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
 
     return (
         <div className="min-h-screen bg-gray-900 flex items-center justify-center">

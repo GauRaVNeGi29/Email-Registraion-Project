@@ -9,26 +9,50 @@ function LandingPage() {
 
   const navigate = useNavigate()
   axios.defaults.withCredentials = true; 
-  const handleLogout = async ()=>{
+  // const handleLogout = async ()=>{
+  //   try {
+  //     const res = await axios.get(`${api}/auth/logout`, { withCredentials: true });
+  //     if (res.data.status) {
+  //       navigate('/login');
+  //     } else {
+  //       console.error('Logout failed: ', res.data.message);
+  //     }
+  //   } catch (err) {
+  //     if (err.response) {
+  //       // The request was made and the server responded with a status code that falls out of the range of 2xx
+  //       console.error('Server responded with an error: ', err.response.data);
+  //     } else if (err.request) {
+  //       // The request was made but no response was received
+  //       console.error('No response received from the server: ', err.request);
+  //     } else {
+  //       // Something happened in setting up the request that triggered an Error
+  //       console.error('Error in setting up the request: ', err.message);
+  //     }
+  //     console.error('Axios error: ', err.config);
+  //   }
+  // }
+
+  const handleLogout = async (e) =>{
+    e.preventDefault();
     try {
-      const res = await axios.get(`${api}/auth/logout`, { withCredentials: true });
-      if (res.data.status) {
-        navigate('/login');
-      } else {
-        console.error('Logout failed: ', res.data.message);
+      const response = await axios.get(`${api}/auth/logout`,
+        {
+        headers:{
+          "Content-Type":"application/json",
+        },
+        withCredentials:true,
+        }
+      )
+      if(response.data.status){
+        navigate("/login");
       }
-    } catch (err) {
-      if (err.response) {
-        // The request was made and the server responded with a status code that falls out of the range of 2xx
-        console.error('Server responded with an error: ', err.response.data);
-      } else if (err.request) {
-        // The request was made but no response was received
-        console.error('No response received from the server: ', err.request);
-      } else {
-        // Something happened in setting up the request that triggered an Error
-        console.error('Error in setting up the request: ', err.message);
+      else{
+        console.log("logout failed");
       }
-      console.error('Axios error: ', err.config);
+      
+    } catch (error) {
+      console.log(error);
+      
     }
   }
 

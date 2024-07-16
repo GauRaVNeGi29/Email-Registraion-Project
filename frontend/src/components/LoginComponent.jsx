@@ -42,6 +42,7 @@ function LoginComponent() {
       console.log(error);
       
     }
+  }
     // axios.post('http://localhost:3000/auth/login', {
     //   email,
     //   password
@@ -52,7 +53,6 @@ function LoginComponent() {
     // }).catch(err => {
     //   console.log(err);
     // });
-  }
 
   return (
     <section className="relative py-10 bg-gray-900 sm:py-16 lg:py-24">

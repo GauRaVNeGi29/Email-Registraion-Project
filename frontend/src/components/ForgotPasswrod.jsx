@@ -11,19 +11,41 @@ const ForgotPassword = () => {
 
   const navigate = useNavigate()
 
-  const handleSubmit = (e) => {
-      e.preventDefault()
-      axios.post(`${api}/auth/forgot-password`, {
-          email
-      }).then(response => {
-          if (response.data.status) {
-            alert("Check your email for reset password link")
-              navigate("/login")
-          }
-      }).catch(err => {
-          console.log("error aa rha h");
-      })
-  };
+  // const handleSubmit = (e) => {
+  //     e.preventDefault()
+  //     axios.post(`${api}/auth/forgot-password`, {
+  //         email
+  //     }).then(response => {
+  //         if (response.data.status) {
+  //           alert("Check your email for reset password link")
+  //             navigate("/login")
+  //         }
+  //     }).catch(err => {
+  //         console.log("error aa rha h");
+  //     })
+  // };
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    try {
+      const response = await axios.post(`${api}/auth/forgot-password`,
+        email, 
+        {
+        headers:{
+          "Content-Type":"application/json",
+        },
+        withCredentials:true,
+        }
+      )
+      if(response.data.status){
+        alert("Check your mail for reset password link")
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log("error");
+      
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 flex items-center justify-center">
