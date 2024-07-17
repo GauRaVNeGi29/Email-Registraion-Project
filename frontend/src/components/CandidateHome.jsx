@@ -7,8 +7,28 @@ import axios from 'axios';
 function CandidateHome() {
   const api = import.meta.env.VITE_BACKEND_URL
   const navigate = useNavigate()
-  axios.defaults.withCredentials = true;
-  // useEffect(()=>{
+
+  useEffect( async () => {
+      try {
+        const response = await axios.get(`${api}/auth/verify`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        });
+
+        if (response.data.status) {
+          console.log(response.data);
+        } else {
+          navigate("/");
+        }
+      } catch (error) {
+        console.log(error);
+        navigate("/");
+      }
+  }, [navigate]);
+  
+  // useEffect(() => {
   //   axios.get(`${api}/auth/verify`)
   //   .then(res=>{
   //     if(res.data.status){
@@ -17,30 +37,8 @@ function CandidateHome() {
   //       navigate('/')
   //     }
   //   })
-    
   // })
-
   
-    try {
-      const response = axios.get(`${api}/auth/verify`,
-        {
-        headers:{
-          "Content-Type":"application/json",
-        },
-        withCredentials:true,
-        }
-      )
-      if(response.data.status){
-        console.log(response.data);
-      }
-      else{
-        navigate("/");
-      }
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
 
   const referralCards = [
     { id: 1, title: 'Referral 1', description: 'Description for referral 1' },
