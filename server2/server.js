@@ -31,6 +31,20 @@ app.use(cors({
 //   optionsSuccessStatus: 204
 // };
 // app.use(cors(corsOptions));
+const http = require('http');
+
+http.createServer((req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://email-registraion-project-vyas-r921wh6ai.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  if (req.method === 'OPTIONS') {
+    res.writeHead(200);
+    res.end();
+    return;
+  }
+  // Your server logic here
+}).listen(3000);
 
 app.use(cookieParser())
 app.use('/auth', UserRouter)
