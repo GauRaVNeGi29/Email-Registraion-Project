@@ -1,32 +1,29 @@
-import React from 'react'
-import { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpComponent = () => {
 
-    const [username, setUsername] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+    axios.defaults.withCredentials = true;
 
-    const api = import.meta.env.VITE_BACKEND_URL
-
-    const navigate = useNavigate()
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post(`${api}/auth/signup`, {
+    const handleSubmit = async (e)=> {
+        e.preventDefault();
+        axios.post("http://localhost:3001/auth/signup", {
             username,
             email,
-            password
+            password,
         }).then(response => {
-            if (response.data.status) {
-                navigate("/login")
+            if (response) {
+                navigate("/login");
             }
         }).catch(err => {
-            console.log(err);
-        })
-    };
+            console.log(err)
+        });
+    }
 
     return (
         <section className="relative py-10 bg-gray-900 sm:py-16 lg:py-24">
@@ -76,8 +73,6 @@ const SignUpComponent = () => {
                                 Already joined? <a href="/login" title="" className="text-blue-600 hover:underline hover:text-blue-700">Login now</a>
                             </p>
                         </div>
-
-
                     </div>
                 </div>
             </div>
@@ -85,4 +80,4 @@ const SignUpComponent = () => {
     )
 }
 
-export default SignUpComponent
+export default SignUpComponent;

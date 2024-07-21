@@ -1,27 +1,27 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
+    const [email, setEmail] = useState('');
 
-    const [password, setPassword] = useState('');
-    const { token } = useParams()
     const navigate = useNavigate();
     axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/auth/reset-password/" + token, {
-            password,
-        }).then(response => {
-            if (response.data.status) {
-                navigate("/login");
-            }
-        }).catch(err => {
-            console.log(err)
-        });
+    axios.post("http://localhost:3001/auth/forgot-password", {
+      email,
+    }).then(response => {
+      if (response.data.status) {
+        alert("Check your email for reset password link")
+        navigate("/");
+      }
+      console.log(response.data);
+    }).catch(err => {
+      console.log(err)
+    });
     };
-
 
     return (
         <div className="min-h-screen bg-gray-900 flex items-center justify-center">
@@ -30,22 +30,24 @@ const ResetPassword = () => {
                     <div className="overflow-hidden bg-white rounded-md shadow-md">
                         <div className="px-4 py-6 sm:px-8 sm:py-7">
                             <div className="text-center">
-                                <h2 className="text-3xl font-bold text-gray-900">Reset Password</h2>
-                                <p className="mt-2 text-base text-gray-600">Enter your new password</p>
+                                <h2 className="text-3xl font-bold text-gray-900">Forgot Password</h2>
+                                <p className="mt-2 text-base text-gray-600">
+                                    Enter your email to reset your password
+                                </p>
                             </div>
 
                             <form onSubmit={handleSubmit} className="mt-8">
                                 <div className="space-y-5">
                                     <div>
-                                        <label htmlFor="password" className="text-base font-medium text-gray-900">New Password</label>
+                                        <label htmlFor="email" className="text-base font-medium text-gray-900">Email</label>
                                         <div className="mt-2.5">
                                             <input
-                                                type="password"
-                                                name="password"
-                                                id="password"
-                                                placeholder="Enter your new password"
+                                                type="email"
+                                                name="email"
+                                                id="email"
+                                                placeholder="Enter your email"
                                                 className="block w-full p-4 text-black placeholder-gray-500 bg-white border border-gray-200 rounded-md focus:outline-none focus:border-blue-600 caret-blue-600"
-                                                onChange={(e) => setPassword(e.target.value)}
+                                                onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </div>
                                     </div>
@@ -53,8 +55,9 @@ const ResetPassword = () => {
                                     <div>
                                         <button
                                             type="submit"
-                                            className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700">
-                                            Reset Password
+                                            className="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-white bg-blue-600 border border-transparent rounded-md focus:outline-none hover:bg-blue-700 focus:bg-blue-700"
+                                        >
+                                            Reset password
                                         </button>
                                     </div>
                                 </div>
@@ -70,7 +73,7 @@ const ResetPassword = () => {
                 </div>
             </section>
         </div>
-    )
+    );
 }
 
-export default ResetPassword
+export default ForgotPassword;

@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import './index.css'
 import LandingPage from './components/LandingPage';
 import LoginComponent from './components/LoginComponent';
-import ForgotPassword from './components/ForgotPasswrod';
+import ForgotPassword from './components/ForgotPassword';
 import CandidateHome from './components/CandidateHome';
 import SignUpComponent from './components/SignUpComponent';
 import ResetPassword from './components/ResetPassword';

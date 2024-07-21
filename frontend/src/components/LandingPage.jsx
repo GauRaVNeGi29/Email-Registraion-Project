@@ -5,55 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import SearchComponent from './SearchComponent';
 
 function LandingPage() {
-  const api = import.meta.env.VITE_BACKEND_URL
-
   const navigate = useNavigate()
-  axios.defaults.withCredentials = true; 
-  // const handleLogout = async ()=>{
-  //   try {
-  //     const res = await axios.get(`${api}/auth/logout`, { withCredentials: true });
-  //     if (res.data.status) {
-  //       navigate('/login');
-  //     } else {
-  //       console.error('Logout failed: ', res.data.message);
-  //     }
-  //   } catch (err) {
-  //     if (err.response) {
-  //       // The request was made and the server responded with a status code that falls out of the range of 2xx
-  //       console.error('Server responded with an error: ', err.response.data);
-  //     } else if (err.request) {
-  //       // The request was made but no response was received
-  //       console.error('No response received from the server: ', err.request);
-  //     } else {
-  //       // Something happened in setting up the request that triggered an Error
-  //       console.error('Error in setting up the request: ', err.message);
-  //     }
-  //     console.error('Axios error: ', err.config);
-  //   }
-  // }
+  axios.defaults.withCredentials = true;
 
   const handleLogout = async (e) =>{
-    e.preventDefault();
-    try {
-      const response = await axios.get(`${api}/auth/logout`,
-        {
-        headers:{
-          "Content-Type":"application/json",
-        },
-        withCredentials:true,
-        }
-      )
-      if(response.data.status){
-        navigate("/login");
+    axios.get('http://localhost:3001/auth/logout')
+    .then(res=>{
+      if(res.data.status){
+        navigate('/login')
       }
-      else{
-        console.log("logout failed");
-      }
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
+    }).catch(err=>{
+      console.log(err);
+    })
   }
 
   return (
@@ -64,10 +27,6 @@ function LandingPage() {
         <div className="relative px-4 sm:px-0 mx-auto">
           <div className="overflow-hidden bg-white rounded-md shadow-md">
             <div className="px-4 py-6 sm:px-8 sm:py-7">
-              {/* <div className="text-center">
-                <h2 className="text-3xl font-bold text-gray-900">Candidate Dashboard</h2>
-                <p className="mt-2 text-base text-gray-600">Navigate to Home or Log Out</p>
-              </div> */}
 
               <div className="mt-8 space-y-5">
                 <div>

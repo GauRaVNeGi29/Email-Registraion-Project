@@ -1,57 +1,43 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import nodemailer from "nodemailer"
 import { User } from '../models/User.js';
 const router = express.Router();
-import jwt from 'jsonwebtoken';
-// import { Resend } from 'resend';
-import dotenv from 'dotenv';
-import nodemailer from 'nodemailer'
 
-dotenv.config();
-
-// const resend = new Resend(process.env.RE_KEY);
 
 router.post('/signup', async (req, res) => {
-    const { name, email, password } = req.body;
+    const { username, email, password } = req.body;
+    const user = await User.findOne({email})
+    if (user) {
+        return res.json({ message: "User already exists" });
+    }  
+    const hashpassword = await bcrypt.hash(password, 10)
+    const newUser = new User({
+        username,
+        email,
+        password: hashpassword
+    });
 
-    try {
-        const user = await User.findOne({ email });
+    await newUser.save();
+    return res.status(201).json({ status:true, message: "User registered successfully" });
+    
+}); 
 
-        if (user) {
-            return res.status(400).json({ message: "User already exists" });
-        }
-
-        const hashpassword = await bcrypt.hash(password, 10);
-        const newUser = new User({
-            username: name,
-            email,
-            password: hashpassword
-        });
-
-        await newUser.save();
-        return res.status(201).json({ status: true, message: "User registered successfully" });
-    } catch (err) {
-        console.error(err); // Log the error to the console
-        return res.status(500).json({ message: "An error occurred while processing your request" });
-    }
-});
-
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email });
+    const user = await User.findOne({email})
     if (!user) {
         return res.json({ message: "User is not registered" });
-    }
-
+    } 
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
         return res.json({ message: "Password is incorrect" });
     }
-
     const token = jwt.sign({ username: user.username }, process.env.KEY, { expiresIn: '1h' });
     res.cookie('token', token, { httpOnly: true, maxAge: 360000 });
     return res.json({ status: true, message: "Login successfully" });
-});
+})
 
 router.post("/forgot-password", async (req, res) => {
     const { email } = req.body;
@@ -63,18 +49,18 @@ router.post("/forgot-password", async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: '5m' });
 
-        const resetLink = `https://email-registraion-project-vyas.vercel.app/reset-password/${token}`;
+        const resetLink = `http://localhost:5173/reset-password/${token}`;
 
         var transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'negigaurav419@gmail.com',
-                pass: 'udxs ztsk iewe asvt'
+                user: process.env.MAIL,
+                pass: process.env.PASS
             }
         });
 
         var mailOptions = {
-            from: 'negigaurav419@gmail.com',
+            from: process.env.MAIL,
             to: email,
             subject: 'reset password',
             text: `Please click the link below to reset your password: \n ${resetLink}`
@@ -82,20 +68,12 @@ router.post("/forgot-password", async (req, res) => {
 
         transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
                 res.json({ message: "error" })
             } else {
                 res.json({ status: true, message: "email sent" })
             }
         });
 
-        // await resend.emails.send({
-        //     from: 'negigaurav419@gmail.com',
-        //     to: email,
-        //     subject: 'Password Reset Request',
-        //     html: `<p>Please click the link below to reset your password:</p><p><a href="${resetLink}">${resetLink}</a></p>`
-        // });
-        // return res.json({ message: "Password reset email sent" });
     } catch (err) {
         console.error(err);
     }
@@ -137,5 +115,4 @@ router.get('/logout', (req, res)=>{
     return res.json({status: true})
 })
 
-
-export { router as UserRouter };
+export {router as UserRouter}
