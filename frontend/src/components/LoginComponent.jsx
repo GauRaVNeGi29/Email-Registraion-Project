@@ -12,6 +12,7 @@ function LoginComponent() {
   const handleSubmit = async (e)=>  {
     e.preventDefault();
     axios.post("https://email-registraion-project.onrender.com/auth/login", {
+      withCredentials: true,
       email,
       password,
     }).then(response => {

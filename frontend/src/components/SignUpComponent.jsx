@@ -13,6 +13,7 @@ const SignUpComponent = () => {
     const handleSubmit = async (e)=> {
         e.preventDefault();
         axios.post("https://email-registraion-project.onrender.com/auth/signup", {
+            withCredentials: true,
             username,
             email,
             password,
