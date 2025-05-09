@@ -8,9 +8,7 @@ function CandidateHome() {
     const navigate = useNavigate()
     axios.defaults.withCredentials = true;
     useEffect(() => {
-        axios.get('https://email-registraion-project.onrender.com/auth/verify', {
-          withCredentials: true
-        })
+        axios.get('http://localhost:3001/auth/verify')
         .then(res=>{
             if(res.data.status){
 

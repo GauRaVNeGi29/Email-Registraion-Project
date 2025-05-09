@@ -11,7 +11,7 @@ const ResetPassword = () => {
     axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("https://email-registraion-project.onrender.com/auth/reset-password/" + token, {
+        axios.post("http://localhost:3001/auth/reset-password/" + token, {
             withCredentials: true,
             password,
         }).then(response => {
