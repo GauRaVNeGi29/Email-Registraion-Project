@@ -49,7 +49,7 @@ router.post("/forgot-password", async (req, res) => {
 
         const token = jwt.sign({ id: user._id }, process.env.KEY, { expiresIn: '5m' });
 
-        const resetLink = `http://localhost:5173/reset-password/${token}`;
+        const resetLink = `https://email-registraion-project.vercel.app/reset-password/${token}`;
 
         var transporter = nodemailer.createTransport({
             service: 'gmail',
