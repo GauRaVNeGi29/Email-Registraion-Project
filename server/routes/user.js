@@ -83,7 +83,7 @@ router.post("/reset-password/:token", async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
     try {
-        const decoded = await jwt.verify(token, process.env.KEY);
+        const decoded = jwt.verify(token, process.env.KEY);
         const id = decoded.id;
         const hashPassword = await bcrypt.hash(password, 10)
         await User.findByIdAndUpdate({_id: id}, {password: hashPassword})
@@ -99,7 +99,7 @@ const verifyUser = async (req, res, next) => {
         if(!token){
             return res.json({status:false, message: "no token"})
         }
-        const decoded = await jwt.verify(token, process.env.KEY);
+        const decoded = jwt.verify(token, process.env.KEY);
         next()
     }catch(err){
             return res.json(err)

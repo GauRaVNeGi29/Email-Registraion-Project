@@ -10,7 +10,7 @@ const ForgotPassword = () => {
     axios.defaults.withCredentials = true;
     const handleSubmit = async (e) => {
         e.preventDefault();
-    axios.post("http://localhost:3001/auth/forgot-password", {
+    axios.post("https://email-registraion-project.onrender.com/auth/forgot-password", {
       email,
     }).then(response => {
       if (response.data.status) {

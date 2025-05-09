@@ -9,7 +9,7 @@ function LandingPage() {
   axios.defaults.withCredentials = true;
 
   const handleLogout = async (e) =>{
-    axios.get('http://localhost:3001/auth/logout')
+    axios.get('https://email-registraion-project.onrender.com/auth/logout')
     .then(res=>{
       if(res.data.status){
         navigate('/login')
